@@ -1,3 +1,4 @@
+require "colorize"
 require "byebug"
 
 class Simon
@@ -30,7 +31,7 @@ class Simon
 
   def take_turn
     show_sequence
-    require_sequence    
+    require_sequence
   end
 
   def show_sequence
@@ -47,7 +48,7 @@ class Simon
     seq.each_with_index do |color, idx|
       puts "Enter color ##{idx+1}: (R, B, G, Y)"
       guess = get_guess
-      game_over = true unless guess == color
+      self.game_over = true unless guess == color
     end
   end
 
@@ -67,7 +68,7 @@ class Simon
 
   def add_random_color
     seq << COLORS.sample
-    sequence_length += 1
+    @sequence_length += 1
   end
 
   def round_success_message
@@ -80,14 +81,11 @@ class Simon
   end
 
   def reset_game
-    seq = [COLORS.sample]
-    sequence_length = 1
-    game_over = false
+    self.seq = [COLORS.sample]
+    self.sequence_length = 1
+    self.game_over = false
 
     play
   end
 
 end
-
-game = Simon.new
-game.play
