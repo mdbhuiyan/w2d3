@@ -29,8 +29,12 @@ class MemoryGame
   def get_player_input
     pos = nil
 
-    until pos && valid_pos?(pos)
+    begin
       pos = player.get_input
+      valid_pos?(pos)
+    rescue InvalidPosition => error
+      puts error.message
+      retry
     end
 
     pos
@@ -61,7 +65,11 @@ class MemoryGame
     puts "Congratulations, you win!"
   end
 
+  class InvalidPosition < StandardError
+  end
+
   def valid_pos?(pos)
+    raise InvalidPosition.new("Not a valid position") unless
     pos.is_a?(Array) &&
       pos.count == 2 &&
       pos.all? { |x| x.between?(0, board.size - 1) }
@@ -74,5 +82,5 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   size = ARGV.empty? ? 4 : ARGV.shift.to_i
-  MemoryGame.new(ComputerPlayer.new(size), size).play
+  MemoryGame.new(HumanPlayer.new(size), size).play
 end
