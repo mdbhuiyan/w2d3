@@ -1,4 +1,5 @@
 require_relative "display"
+require_relative "pieces"
 require "byebug"
 
 class Board
@@ -60,46 +61,6 @@ class Board
   end
 
 end # end of Board class
-
-
-class Piece
-
-  attr_accessor :position
-  attr_reader :color, :board
-
-  def initialize(position, color, board)
-    @position = position
-    @color = color
-    @board = board
-  end
-
-  def to_s
-
-    if self.position == board.display.cursor_pos
-      "P".colorize(:red)
-    else
-      "P".colorize(color)
-    end
-  end
-
-end
-
-class NullPiece < Piece
-
-  def initialize(position, board)
-    @position = position
-    @board = board
-  end
-
-  def to_s
-    if self.position == board.display.cursor_pos
-      " ".colorize(:background => :red)
-    else
-      " "
-    end
-  end
-
-end
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
