@@ -64,6 +64,20 @@ class Board
 
   def move_pos(start_pos, end_pos)
     unless self[start_pos].is_a?(NullPiece) ||
+      !self[start_pos].valid_moves.include?(end_pos)
+        if self[end_pos].is_a?(NullPiece)
+          self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+          self[end_pos].position = end_pos
+        else
+          take_piece(start_pos, end_pos)
+        end
+    else
+      puts "Not a valid move"
+    end
+  end
+
+  def move_pos!(start_pos, end_pos)
+    unless self[start_pos].is_a?(NullPiece) ||
       !self[start_pos].find_moves.include?(end_pos)
         if self[end_pos].is_a?(NullPiece)
           self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
