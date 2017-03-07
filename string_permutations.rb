@@ -17,3 +17,5 @@ def string_permutations(string)
 
   final_perms
 end
+
+puts string_permutations("hello")
