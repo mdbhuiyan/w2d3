@@ -3,7 +3,7 @@ require_relative "pieces"
 require "byebug"
 
 class Board
-  attr_accessor :grid
+  attr_accessor :grid, :null
   attr_reader :display
 
   def initialize(board = nil)
@@ -20,10 +20,9 @@ class Board
     initial_grid.each_with_index do |row, x|
       final_row = []
       row.each_with_index do |col, y|
-
-        final_row << Piece.new([x, y], :blue, self) if x < 2
-        final_row << Piece.new([x, y], :green, self) if x > 5
-        final_row << NullPiece.new([x,y], self) if x > 1 && x < 6
+        final_row << Queen.new([x, y], :blue, self) if x < 2
+        final_row << King.new([x, y], :green, self) if x > 5
+        final_row << NullPiece.instance if x > 1 && x < 6
       end
       final_grid << final_row
     end
@@ -32,11 +31,26 @@ class Board
   end
 
   def move_pos(start_pos, end_pos)
-    if self[start_pos].is_a?(Piece) && self[end_pos].is_a?(NullPiece)
-      self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+    unless self[start_pos].is_a?(NullPiece) ||
+      !self[start_pos].find_moves.include?(end_pos)
+        if self[end_pos].is_a?(NullPiece)
+          self[start_pos], self[end_pos] = self[end_pos], self[start_pos]
+          self[end_pos].position = end_pos
+        else
+          take_piece(start_pos, end_pos)
+        end
     else
-      #implement error handling here
+      puts "Not a valid move"
     end
+  end
+
+  def take_piece(start_pos, end_pos)
+    victor = self[start_pos]
+    loser = self[end_pos]
+    self[end_pos] = victor
+    victor.position = end_pos
+    loser.position = nil
+    self[start_pos] = NullPiece.instance
   end
 
   def [](pos)
@@ -64,6 +78,18 @@ end # end of Board class
 
 if __FILE__ == $PROGRAM_NAME
   board = Board.new
-  board.display.test_render
+  # queen = Queen.new([4,4], :green, board)
+  # bishop = Bishop.new([4, 4], :green, board)
+  # rook = Rook.new([4,4], :green, board)
+  # king = King.new([3,3], :blue, board)
+  # pawn = Pawn.new([1,0], :blue, board)
+  # board[[2,1]] = Rook.new([2,1], :green, board)
+  #
+  # puts pawn.find_moves.to_s
+  # puts queen.find_moves.to_s
+  # puts bishop.find_moves.to_s
+  # puts rook.find_moves.to_s
+  # puts king.find_moves.to_s
 
+    board.display.test_render
 end

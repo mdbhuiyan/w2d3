@@ -91,6 +91,8 @@ class Cursor
     when :ctrl_c
       Process.exit(0)
     end
+
+    nil
   end
 
   def update_pos(diff)
