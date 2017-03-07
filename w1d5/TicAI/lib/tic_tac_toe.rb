@@ -1,5 +1,6 @@
 # DON'T EDIT ME!
-
+require_relative "tic_tac_toe_node"
+require_relative "super_computer_player"
 
 class Board
   attr_reader :rows
@@ -163,46 +164,6 @@ class HumanPlayer
   private
   def self.valid_coord?(row, col)
     [row, col].all? { |coord| (0..2).include?(coord) }
-  end
-end
-
-class ComputerPlayer
-  attr_reader :name
-
-  def initialize
-    @name = "Tandy 400"
-  end
-
-  def move(game, mark)
-    winner_move(game, mark) || random_move(game)
-  end
-
-  private
-  def winner_move(game, mark)
-    (0..2).each do |row|
-      (0..2).each do |col|
-        board = game.board.dup
-        pos = [row, col]
-
-        next unless board.empty?(pos)
-        board[pos] = mark
-
-        return pos if board.winner == mark
-      end
-    end
-
-    # no winning move
-    nil
-  end
-
-  def random_move(game)
-    board = game.board
-    while true
-      range = (0..2).to_a
-      pos = [range.sample, range.sample]
-
-      return pos if board.empty?(pos)
-    end
   end
 end
 
