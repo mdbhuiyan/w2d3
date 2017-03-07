@@ -16,7 +16,8 @@ class TicTacToeNode
 
     return false if board.winner == evaluator && board.over?
     return true if board.winner == opponent_mark && board.over?
-
+    return false if board.tied?
+    
     if next_mover_mark == evaluator
 
       children.each do |child|
@@ -37,6 +38,7 @@ class TicTacToeNode
 
     return true if board.winner == evaluator && board.over?
     return false if board.winner == opponent_mark && board.over?
+    return false if board.tied?
 
     if next_mover_mark == evaluator
 
