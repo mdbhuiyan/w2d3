@@ -1,4 +1,3 @@
-
 class Piece
 
   attr_accessor :position, :allowed_deltas, :allowed_directions
